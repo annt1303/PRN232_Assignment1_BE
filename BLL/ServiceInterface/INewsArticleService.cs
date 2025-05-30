@@ -1,0 +1,23 @@
+﻿
+using BLL.Models;
+using DAL.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BLL.ServiceInterface
+{
+    public interface INewsArticleService
+    {
+        public Task CreateAsync(NewsArticleDTO articleDTO);
+        public Task<bool> DeleteAsync(string id);
+        Task<List<NewsArticleDTO>?> GetArticlesByStaffIdAsync(int staffId);
+        Task<List<NewsArticleDTO>?> SearchAsync(string? keyword);
+        public Task<List<NewsArticleDTO>> GetAllArticleAsync();
+        public Task<NewsArticleDTO?> GetByIdAsync(string id);
+        public Task<List<NewsArticleDTO>> ShowNewAsync(DateTime? startDate, DateTime? endDate);
+        public Task UpdateAsync(NewsArticleDTO articleDTO);
+    }
+}
