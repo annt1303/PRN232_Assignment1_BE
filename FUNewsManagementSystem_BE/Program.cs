@@ -5,40 +5,12 @@ using DAL.Repositories.Implement;
 using DAL.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Đăng ký DbContext đúng cách
-builder.Services.AddDbContext<FUNewsManagementContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// 2. Kiểm tra kết nối và log thông tin
-var testConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var loggerFactory = LoggerFactory.Create(logging => logging.AddConsole());
-var logger = loggerFactory.CreateLogger("Startup");
-
-try
 {
     var options = new DbContextOptionsBuilder<FUNewsManagementContext>()
-        .UseSqlServer(testConnectionString)
         .Options;
-
-    using var context = new FUNewsManagementContext(options);
-    if (context.Database.CanConnect())
-    {
-        logger.LogInformation("✅ Connected successfully to the database.");
-    }
-    else
-    {
-        logger.LogWarning("⚠️ Cannot connect to the database.");
-    }
-}
-catch (Exception ex)
-{
-    logger.LogError(ex, "❌ Connection failed!");
-    logger.LogInformation("Connection string used: {cs}", testConnectionString);
-}
 
 // 3. Cấu hình OData
 var odataBuilder = new ODataConventionModelBuilder();
@@ -61,12 +33,12 @@ builder.Services.AddScoped<ITagService, TagService>();
 
 // 6. Controller & Swagger
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// 7. Middlewares
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
