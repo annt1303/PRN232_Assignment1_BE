@@ -16,8 +16,8 @@ namespace BLL.ServiceInterface
 
         Task<LoginResultDTO?> Login(string email, string password);
 
-		Task<List<SystemAccountDTO>?> GetAllAccounts();
-        Task<SystemAccountDTO?> Login(string email, string password);
+	
+        //Task<SystemAccountDTO?> Login(string email, string password);
         Task<List<SystemAccountDTO>?> GetAllAccounts(int page, int size);
         Task<SystemAccountDTO?> GetAccountById(short id);
         Task<SystemAccountDTO> CreateAccount(SystemAccountRequest accountDto);

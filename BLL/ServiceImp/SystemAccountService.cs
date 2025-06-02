@@ -49,9 +49,8 @@ namespace BLL.ServiceImp
 		}
 
 
-        public async Task<List<SystemAccountDTO>?> GetAllAccounts(int page, int size)
 
-		public async Task<List<SystemAccountDTO>?> GetAllAccounts()
+		public async Task<List<SystemAccountDTO>?> GetAllAccounts(int page, int size)
         {
             var paginatedAccounts = await _systemAccountRepository.GetAllAsync(page, size);
             if (paginatedAccounts == null) return null;
