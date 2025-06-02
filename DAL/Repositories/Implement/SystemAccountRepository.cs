@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Core;
+using DAL.Models;
 using DAL.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,10 +19,20 @@ namespace DAL.Repositories.Implement
             _context = context;
         }
 
-        public async Task<List<SystemAccount>?> GetAllAccounts()
+        public async Task<PaginatedList<SystemAccount>> GetAllAccountsAsync(int page, int size)
         {
-            return await _context.SystemAccounts.AsNoTracking().ToListAsync();
+            var query = _context.SystemAccounts.AsNoTracking();
+            return await PaginatedList<SystemAccount>.CreateAsync(query, page, size);
         }
+
+
+        public async Task<PaginatedList<SystemAccount>> GetAllAsync(int pageNumber, int pageSize)
+        {
+            var query = _context.SystemAccounts.AsNoTracking();
+            return await PaginatedList<SystemAccount>.CreateAsync(query, pageNumber, pageSize);
+        }
+
+
 
         public async Task<SystemAccount?> GetAccountById(short id)
         {

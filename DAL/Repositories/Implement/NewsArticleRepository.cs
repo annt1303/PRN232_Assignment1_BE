@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Core;
+using DAL.Models;
 using DAL.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DAL.Repositories.Implement
 {
@@ -37,16 +39,19 @@ namespace DAL.Repositories.Implement
             return true;
         }
 
-        public async Task<List<NewsArticle>> GetAllAsync()
+        public async Task<PaginatedList<NewsArticle>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await _context.NewsArticles
+            var query = _context.NewsArticles
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Category)
                 .Include(x => x.Tags)
                 .Where(x => x.NewsStatus == true)
                 .OrderByDescending(a => a.CreatedDate)
-                .AsNoTracking().ToListAsync();
+                .AsNoTracking();
+
+            return await PaginatedList<NewsArticle>.CreateAsync(query, pageNumber, pageSize);
         }
+
 
         public async Task<List<NewsArticle>> GetArticlesByCategory(short categoryId)
         {

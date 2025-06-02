@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Core;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace DAL.Repositories.Interface
     {
         Task<List<NewsArticle>> GetArticlesByStaffIdAsync(int staffId);
         Task<List<NewsArticle>> GetArticlesByCategory(short categoryId);
-        Task<List<NewsArticle>> GetAllAsync();
+        Task<PaginatedList<NewsArticle>> GetAllAsync(int pageNumber, int pageSize);
         Task<List<NewsArticle>> SearchAsync(string keyword);
         Task<List<NewsArticle>> ShowNewAsync(DateTime? startDate, DateTime? endDate);
         Task<NewsArticle?> GetByIdAsync(string id);

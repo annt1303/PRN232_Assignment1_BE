@@ -49,18 +49,19 @@ namespace BLL.ServiceImp
 		}
 
 
+        public async Task<List<SystemAccountDTO>?> GetAllAccounts(int page, int size)
+
 		public async Task<List<SystemAccountDTO>?> GetAllAccounts()
         {
-            List<SystemAccount>? systemAccounts = await _systemAccountRepository.GetAllAccounts();
-            if (systemAccounts == null) return null;
+            var paginatedAccounts = await _systemAccountRepository.GetAllAsync(page, size);
+            if (paginatedAccounts == null) return null;
             List<SystemAccountDTO> systemAccountDTOs = new List<SystemAccountDTO>();
-            foreach (SystemAccount item in systemAccounts)
+            foreach (SystemAccount item in paginatedAccounts.Items)
             {
                 systemAccountDTOs.Add(MapToDTO(item));
             }
             return systemAccountDTOs;
         }
-
         public async Task<SystemAccountDTO?> GetAccountById(short id)
         {
             SystemAccount? systemAccount = await _systemAccountRepository.GetAccountById(id);
@@ -124,11 +125,11 @@ namespace BLL.ServiceImp
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<List<SystemAccountDTO>?> SearchAccountsByNameAsync(string name)
+        public async Task<List<SystemAccountDTO>?> SearchAccountsByNameAsync(string name, int page, int size)
         {
             if (name == null)
             {
-                return await GetAllAccounts();
+                return await GetAllAccounts(page , size);
             }
             List<SystemAccount>? systemAccounts = await _systemAccountRepository.SearchAccountsByNameAsync(name);
             if (systemAccounts == null) return null;

@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Core;
+using DAL.Models;
 using DAL.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -49,11 +50,16 @@ namespace DAL.Repositories.Implement
             return true;
         }
 
-        public async Task<List<Category>> GetAllAsync()
+        public async Task<PaginatedList<Category>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await _context.Categories.Include(x => x.ParentCategory)
-                .Where(x => x.IsActive.Equals(true)).AsNoTracking().ToListAsync();
+            var query = _context.Categories
+                .Include(x => x.ParentCategory)
+                .Where(x => x.IsActive == true)
+                .AsNoTracking();
+
+            return await PaginatedList<Category>.CreateAsync(query, pageNumber, pageSize);
         }
+
 
         public async Task<Category?> GetByIdAsync(short id)
         {

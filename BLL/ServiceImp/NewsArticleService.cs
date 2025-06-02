@@ -24,25 +24,24 @@ namespace BLL.ServiceImp
             _tagRepository = tagRepository;
         }
 
-        public async Task<List<NewsArticleDTO>> GetAllArticleAsync()
+        public async Task<List<NewsArticleDTO>> GetAllArticleAsync(int pageNumber, int pageSize)
         {
             List<NewsArticleDTO> newDTOs = new List<NewsArticleDTO>();
-            List<NewsArticle> news = await _newsArticleRepository.GetAllAsync();
+            var paginatedNews = await _newsArticleRepository.GetAllAsync(pageNumber, pageSize);
 
-            foreach (NewsArticle x in news)
+            foreach (NewsArticle x in paginatedNews.Items)
             {
                 newDTOs.Add(await MapToDTO(x));
-
             }
 
             return newDTOs;
         }
 
-        public async Task<List<NewsArticleDTO>> ShowNewAsync(DateTime? startDate, DateTime? endDate)
+        public async Task<List<NewsArticleDTO>> ShowNewAsync(DateTime? startDate, DateTime? endDate, int page, int size)
         {
             if (startDate == null && endDate == null)
             {
-                return await GetAllArticleAsync();
+                return await GetAllArticleAsync(page, size);
             }
             List<NewsArticleDTO> newDTOs = new List<NewsArticleDTO>();
             List<NewsArticle> news = await _newsArticleRepository.ShowNewAsync(startDate, endDate);
@@ -170,11 +169,11 @@ namespace BLL.ServiceImp
             return newDTOs;
         }
 
-        public async Task<List<NewsArticleDTO>?> SearchAsync(string? keyword)
+        public async Task<List<NewsArticleDTO>?> SearchAsync(string? keyword, int page, int size)
         {
             if (keyword == null)
             {
-                return await GetAllArticleAsync();
+                return await GetAllArticleAsync(page, size);
             }
             List<NewsArticleDTO> newDTOs = new List<NewsArticleDTO>();
             List<NewsArticle> news = await _newsArticleRepository.SearchAsync(keyword);

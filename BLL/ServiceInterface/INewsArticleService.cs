@@ -15,10 +15,10 @@ namespace BLL.ServiceInterface
         public Task CreateAsync(NewsArticleRequest articleDTO);
         public Task<bool> DeleteAsync(string id);
         Task<List<NewsArticleDTO>?> GetArticlesByStaffIdAsync(int staffId);
-        Task<List<NewsArticleDTO>?> SearchAsync(string? keyword);
-        public Task<List<NewsArticleDTO>> GetAllArticleAsync();
+        Task<List<NewsArticleDTO>?> SearchAsync(string? keyword, int page, int size);
+        public Task<List<NewsArticleDTO>> GetAllArticleAsync(int page, int size);
         public Task<NewsArticleDTO?> GetByIdAsync(string id);
-        public Task<List<NewsArticleDTO>> ShowNewAsync(DateTime? startDate, DateTime? endDate);
+        public Task<List<NewsArticleDTO>> ShowNewAsync(DateTime? startDate, DateTime? endDate, int page, int size);
         public Task UpdateAsync(NewsArticleDTO articleDTO);
     }
 }
