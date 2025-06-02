@@ -63,6 +63,16 @@ namespace FUNewsManagementSystem_BE.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    }
+
+		[HttpPost("login")]
+		public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
+		{
+			var result = await _accountService.Login(model.Email, model.Password);
+			if (result == null) return Unauthorized(new { message = "Invalid email or password" });
+
+			return Ok(result);
+		}
+
+	}
 
 }
