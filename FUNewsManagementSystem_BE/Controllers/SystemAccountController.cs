@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +36,7 @@ namespace FUNewsManagementSystem_BE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SystemAccountDTO dto)
+        public async Task<IActionResult> Create([FromBody] SystemAccountRequest dto)
         {
             var created = await _accountService.CreateAccount(dto);
             return Ok(created);
