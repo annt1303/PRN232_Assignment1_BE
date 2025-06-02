@@ -18,20 +18,38 @@ namespace BLL.ServiceImp
 
         private readonly INewsArticleRepository _newsArticleRepository;
 
-        public SystemAccountService(ISystemAccountRepository systemAccountRepository, INewsArticleRepository newsArticleRepository)
+		private readonly JwtHelper _jwtHelper;
+
+		public SystemAccountService(ISystemAccountRepository systemAccountRepository, INewsArticleRepository newsArticleRepository, JwtHelper jwtHelpe)
         {
             _systemAccountRepository = systemAccountRepository;
             _newsArticleRepository = newsArticleRepository;
-        }
+			_jwtHelper = jwtHelpe;
+		}
 
-        public async Task<SystemAccountDTO> Login(string email, string password)
-        {
-            SystemAccount? systemAccount = await _systemAccountRepository.Login(email, password);
-            if (systemAccount == null) return null;
-            return MapToDTO(systemAccount);
-        }
+		//public async Task<SystemAccountDTO> Login(string email, string password)
+		//{
+		//    SystemAccount? systemAccount = await _systemAccountRepository.Login(email, password);
+		//    if (systemAccount == null) return null;
+		//    return MapToDTO(systemAccount);
+		//}
 
-        public async Task<List<SystemAccountDTO>?> GetAllAccounts()
+		public async Task<LoginResultDTO?> Login(string email, string password)
+		{
+			var systemAccount = await _systemAccountRepository.Login(email, password);
+			if (systemAccount == null) return null;
+
+			var token = _jwtHelper.GenerateToken(systemAccount.AccountEmail, systemAccount.AccountRole);
+
+			return new LoginResultDTO
+			{
+				Token = token,
+				Account = MapToDTO(systemAccount)
+			};
+		}
+
+
+		public async Task<List<SystemAccountDTO>?> GetAllAccounts()
         {
             List<SystemAccount>? systemAccounts = await _systemAccountRepository.GetAllAccounts();
             if (systemAccounts == null) return null;
