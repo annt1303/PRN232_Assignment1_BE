@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using DAL.Models;
 using DAL.Repositories.Interface;
@@ -30,25 +31,25 @@ namespace BLL.ServiceImp
             return MapToDTO(systemAccount);
         }
 
-        public async Task<List<SystemAccountDTO>?> GetAllAccounts()
+
+        public async Task<List<SystemAccountDTO>?> GetAllAccounts(int page, int size)
         {
-            List<SystemAccount>? systemAccounts = await _systemAccountRepository.GetAllAccounts();
-            if (systemAccounts == null) return null;
+            var paginatedAccounts = await _systemAccountRepository.GetAllAsync(page, size);
+            if (paginatedAccounts == null) return null;
             List<SystemAccountDTO> systemAccountDTOs = new List<SystemAccountDTO>();
-            foreach (SystemAccount item in systemAccounts)
+            foreach (SystemAccount item in paginatedAccounts.Items)
             {
                 systemAccountDTOs.Add(MapToDTO(item));
             }
             return systemAccountDTOs;
         }
-
         public async Task<SystemAccountDTO?> GetAccountById(short id)
         {
             SystemAccount? systemAccount = await _systemAccountRepository.GetAccountById(id);
             return systemAccount != null ? MapToDTO(systemAccount) : null;
         }
 
-        public async Task<SystemAccountDTO> CreateAccount(SystemAccountDTO accountDto)
+        public async Task<SystemAccountDTO> CreateAccount(SystemAccountRequest accountDto)
         {
             short AccountId = await _systemAccountRepository.GenerateId();
             var account = new SystemAccount
@@ -105,11 +106,11 @@ namespace BLL.ServiceImp
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<List<SystemAccountDTO>?> SearchAccountsByNameAsync(string name)
+        public async Task<List<SystemAccountDTO>?> SearchAccountsByNameAsync(string name, int page, int size)
         {
             if (name == null)
             {
-                return await GetAllAccounts();
+                return await GetAllAccounts(page , size);
             }
             List<SystemAccount>? systemAccounts = await _systemAccountRepository.SearchAccountsByNameAsync(name);
             if (systemAccounts == null) return null;

@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +22,23 @@ namespace FUNewsManagementSystem_BE.Controllers
 
         // GET: api/NewsArticles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NewsArticleDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<NewsArticleDTO>>> GetAll(
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10)
         {
-            var result = await _newsArticleService.GetAllArticleAsync();
+            var result = await _newsArticleService.GetAllArticleAsync(page, size);
             return Ok(result);
         }
 
         // GET: api/NewsArticles/show?startDate=2025-05-01&endDate=2025-05-31
         [HttpGet("show")]
-        public async Task<ActionResult<IEnumerable<NewsArticleDTO>>> Show([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        public async Task<ActionResult<IEnumerable<NewsArticleDTO>>> Show(
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10)
         {
-            var result = await _newsArticleService.ShowNewAsync(startDate, endDate);
+            var result = await _newsArticleService.ShowNewAsync(startDate, endDate, page, size);
             return Ok(result);
         }
 
@@ -46,7 +53,7 @@ namespace FUNewsManagementSystem_BE.Controllers
 
         // POST: api/NewsArticles
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] NewsArticleDTO article)
+        public async Task<IActionResult> Create([FromBody] NewsArticleRequest article)
         {
             await _newsArticleService.CreateAsync(article);
             return Ok();
@@ -79,9 +86,12 @@ namespace FUNewsManagementSystem_BE.Controllers
 
         // GET: api/NewsArticles/search?keyword=abc
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<NewsArticleDTO>>> Search([FromQuery] string? keyword)
+        public async Task<ActionResult<IEnumerable<NewsArticleDTO>>> Search(
+            [FromQuery] string? keyword,
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10)
         {
-            var result = await _newsArticleService.SearchAsync(keyword);
+            var result = await _newsArticleService.SearchAsync(keyword, page, size);
             return Ok(result);
         }
     }

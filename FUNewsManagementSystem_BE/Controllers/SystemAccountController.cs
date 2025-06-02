@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +20,8 @@ namespace FUNewsManagementSystem_BE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _accountService.GetAllAccounts());
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10)
+    => Ok(await _accountService.GetAllAccounts(page, size));
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(short id)
@@ -29,13 +31,13 @@ namespace FUNewsManagementSystem_BE.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string name)
+        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] int page = 1, [FromQuery] int size = 10)
         {
-            return Ok(await _accountService.SearchAccountsByNameAsync(name));
+            return Ok(await _accountService.SearchAccountsByNameAsync(name, page, size));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SystemAccountDTO dto)
+        public async Task<IActionResult> Create([FromBody] SystemAccountRequest dto)
         {
             var created = await _accountService.CreateAccount(dto);
             return Ok(created);
