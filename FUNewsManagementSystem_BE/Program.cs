@@ -8,9 +8,9 @@ using Microsoft.OData.ModelBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 
-{
-    var options = new DbContextOptionsBuilder<FUNewsManagementContext>()
-        .Options;
+// 1. Đăng ký DbContext đúng cách
+builder.Services.AddDbContext<FUNewsManagementContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 3. Cấu hình OData
 var odataBuilder = new ODataConventionModelBuilder();
@@ -33,12 +33,12 @@ builder.Services.AddScoped<ITagService, TagService>();
 
 // 6. Controller & Swagger
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// 7. Middlewares
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
