@@ -11,7 +11,8 @@ public partial class FUNewsManagementContext : DbContext
     public FUNewsManagementContext(DbContextOptions<FUNewsManagementContext> options)
         : base(options)
     {
-    }
+        this.Database.EnsureCreated();
+	}
 
     public virtual DbSet<Category> Categories { get; set; }
 

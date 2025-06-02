@@ -3,8 +3,12 @@ using BLL.ServiceInterface;
 using DAL.Models;
 using DAL.Repositories.Implement;
 using DAL.Repositories.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.ModelBuilder;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,11 +34,37 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<INewsArticleService, NewsArticleService>();
 builder.Services.AddScoped<ISystemAccountService, SystemAccountService>();
 builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddSingleton<JwtHelper>();
+
 
 // 6. Controller & Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// 7. JWT setting 
+// Get JWT settings
+var jwtConfig = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtConfig["SecretKey"];
+var key = Encoding.UTF8.GetBytes(secretKey!);
+
+// Add JWT Auth
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(options =>
+	{
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			ValidateIssuerSigningKey = true,
+			ValidIssuer = jwtConfig["Issuer"],
+			ValidAudience = jwtConfig["Audience"],
+			IssuerSigningKey = new SymmetricSecurityKey(key)
+		};
+	});
+
+
 
 var app = builder.Build();
 

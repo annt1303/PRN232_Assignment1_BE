@@ -11,8 +11,11 @@ namespace BLL.ServiceInterface
 {
     public interface ISystemAccountService
     {
-        Task<SystemAccountDTO?> Login(string email, string password);
-        Task<List<SystemAccountDTO>?> GetAllAccounts();
+        //Task<SystemAccountDTO?> Login(string email, string password);
+
+        Task<LoginResultDTO?> Login(string email, string password);
+
+		Task<List<SystemAccountDTO>?> GetAllAccounts();
         Task<SystemAccountDTO?> GetAccountById(short id);
         Task<SystemAccountDTO> CreateAccount(SystemAccountDTO accountDto);
         Task<bool> UpdateAccount(SystemAccountDTO accountDto);

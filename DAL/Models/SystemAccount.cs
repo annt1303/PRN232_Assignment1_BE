@@ -13,7 +13,7 @@ public partial class SystemAccount
 
     public string AccountEmail { get; set; }
 
-    public int? AccountRole { get; set; }
+    public int? AccountRole { get; set; }  // Staff = 1 , Lecturer = 2 , Admin = appsettings
 
     public string AccountPassword { get; set; }
 
