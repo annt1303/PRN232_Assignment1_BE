@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using DAL.Models;
 using DAL.Repositories.Interface;
@@ -92,7 +93,7 @@ namespace BLL.ServiceImp
             return tagDTOs;
         }
 
-        public async Task CreateAsync(NewsArticleDTO articleDTO)
+        public async Task CreateAsync(NewsArticleRequest articleDTO)
         {
             var newsArticle = new NewsArticle
             {

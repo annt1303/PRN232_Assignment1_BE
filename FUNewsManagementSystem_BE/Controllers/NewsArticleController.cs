@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +47,7 @@ namespace FUNewsManagementSystem_BE.Controllers
 
         // POST: api/NewsArticles
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] NewsArticleDTO article)
+        public async Task<IActionResult> Create([FromBody] NewsArticleRequest article)
         {
             await _newsArticleService.CreateAsync(article);
             return Ok();

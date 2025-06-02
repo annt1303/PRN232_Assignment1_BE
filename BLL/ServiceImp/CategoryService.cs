@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using DAL.Models;
 using DAL.Repositories.Interface;
@@ -20,7 +21,7 @@ namespace BLL.ServiceImp
             _categoryRepository = categoryRepository;
             _newsArticleRepository = newsArticleRepository;
         }
-        public async Task AddAsync(CategoryDTO categoryDto)
+        public async Task AddAsync(CategoryRequest categoryDto)
         {
             await _categoryRepository.AddAsync(new Category
             {

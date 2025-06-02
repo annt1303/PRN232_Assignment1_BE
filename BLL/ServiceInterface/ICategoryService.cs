@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace BLL.ServiceInterface
 {
     public interface ICategoryService
     {
-        Task AddAsync(CategoryDTO categoryDto);
+        Task AddAsync(CategoryRequest categoryDto);
         Task<List<CategoryDTO>> GetAllAsync();
         Task<CategoryDTO?> GetByIdAsync(short id);
 

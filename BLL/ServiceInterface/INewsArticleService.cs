@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace BLL.ServiceInterface
 {
     public interface INewsArticleService
     {
-        public Task CreateAsync(NewsArticleDTO articleDTO);
+        public Task CreateAsync(NewsArticleRequest articleDTO);
         public Task<bool> DeleteAsync(string id);
         Task<List<NewsArticleDTO>?> GetArticlesByStaffIdAsync(int staffId);
         Task<List<NewsArticleDTO>?> SearchAsync(string? keyword);
