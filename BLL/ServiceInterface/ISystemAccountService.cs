@@ -17,11 +17,13 @@ namespace BLL.ServiceInterface
         Task<LoginResultDTO?> Login(string email, string password);
 
 		Task<List<SystemAccountDTO>?> GetAllAccounts();
+        Task<SystemAccountDTO?> Login(string email, string password);
+        Task<List<SystemAccountDTO>?> GetAllAccounts(int page, int size);
         Task<SystemAccountDTO?> GetAccountById(short id);
         Task<SystemAccountDTO> CreateAccount(SystemAccountRequest accountDto);
         Task<bool> UpdateAccount(SystemAccountDTO accountDto);
         Task<bool> UpdateProfileStaff(SystemAccountDTO accountDto);
         Task<bool> DeleteAccount(short id);
-        Task<List<SystemAccountDTO>?> SearchAccountsByNameAsync(string name);
+        Task<List<SystemAccountDTO>?> SearchAccountsByNameAsync(string name, int page, int size);
     }
 }

@@ -42,15 +42,14 @@ namespace BLL.ServiceImp
             return await _categoryRepository.DeleteAsync(id);
         }
 
-        public async Task<List<CategoryDTO>> GetAllAsync()
+        public async Task<List<CategoryDTO>> GetAllAsync(int page, int size)
         {
             List<CategoryDTO> categoryDTOs = new List<CategoryDTO>();
-            List<Category> categories = await _categoryRepository.GetAllAsync();
+            var paginatedCategories = await _categoryRepository.GetAllAsync(page, size);
 
-            foreach (Category x in categories)
+            foreach (Category x in paginatedCategories.Items)
             {
                 categoryDTOs.Add(MapToDTO(x));
-
             }
 
             return categoryDTOs;
@@ -65,11 +64,11 @@ namespace BLL.ServiceImp
             return MapToDTO(category);
         }
 
-        public async Task<List<CategoryDTO>> SearchAsync(string keyword)
+        public async Task<List<CategoryDTO>> SearchAsync(string keyword, int page, int size)
         {
             if (keyword == null)
             {
-                return await GetAllAsync();
+                return await GetAllAsync(page, size);
             }
             List<CategoryDTO> categoryDTOs = new List<CategoryDTO>();
             List<Category>? categories = await _categoryRepository.SearchAsync(keyword);

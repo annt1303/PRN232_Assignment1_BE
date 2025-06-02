@@ -20,7 +20,8 @@ namespace FUNewsManagementSystem_BE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _categoryService.GetAllAsync());
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10)
+     => Ok(await _categoryService.GetAllAsync(page, size));
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(short id)
@@ -30,11 +31,10 @@ namespace FUNewsManagementSystem_BE.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string keyword)
+        public async Task<IActionResult> Search([FromQuery] string keyword, [FromQuery] int page = 1, [FromQuery] int size = 10)
         {
-            return Ok(await _categoryService.SearchAsync(keyword));
+            return Ok(await _categoryService.SearchAsync(keyword, page, size));
         }
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryRequest dto)
         {

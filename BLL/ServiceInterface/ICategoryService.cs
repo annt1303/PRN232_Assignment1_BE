@@ -13,14 +13,14 @@ namespace BLL.ServiceInterface
     public interface ICategoryService
     {
         Task AddAsync(CategoryRequest categoryDto);
-        Task<List<CategoryDTO>> GetAllAsync();
+        Task<List<CategoryDTO>> GetAllAsync(int page, int size);
         Task<CategoryDTO?> GetByIdAsync(short id);
 
         Task UpdateAsync(CategoryDTO categoryDto);
 
         Task<bool> DeleteAsync(short id);
 
-        Task<List<CategoryDTO>> SearchAsync(string keyword);
+        Task<List<CategoryDTO>> SearchAsync(string keyword, int page, int size);
 
     }
 }

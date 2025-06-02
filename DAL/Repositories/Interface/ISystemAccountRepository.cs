@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using DAL.Core;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,9 @@ namespace DAL.Repositories.Interface
 {
     public interface ISystemAccountRepository
     {
-        Task<List<SystemAccount>?> GetAllAccounts();
+
+
+        Task<PaginatedList<SystemAccount>> GetAllAsync(int pageNumber, int pageSize);
         Task<SystemAccount?> GetAccountById(short id);
         Task<SystemAccount?> Login(string email, string password);
         Task<SystemAccount> CreateAccount(SystemAccount account);
