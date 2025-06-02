@@ -1,5 +1,6 @@
 ﻿
 using BLL.Models;
+using BLL.Models.Request;
 using BLL.ServiceInterface;
 using DAL.Models;
 using DAL.Repositories.Interface;
@@ -66,7 +67,7 @@ namespace BLL.ServiceImp
             return systemAccount != null ? MapToDTO(systemAccount) : null;
         }
 
-        public async Task<SystemAccountDTO> CreateAccount(SystemAccountDTO accountDto)
+        public async Task<SystemAccountDTO> CreateAccount(SystemAccountRequest accountDto)
         {
             short AccountId = await _systemAccountRepository.GenerateId();
             var account = new SystemAccount
